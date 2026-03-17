@@ -1,0 +1,12 @@
+.DS_Store
+.env
+.claude/
+__pycache__/
+**/__pycache__/
+
+database/*.parquet
+
+outputs/*
+!outputs/yearly_comparison_2023_2025_regime_driven_v10_beta_tuned.csv
+!outputs/yearly_comparison_2023_2025_regime_driven_v10_with_btc_sharpe.csv
+!outputs/search_beta_23_24_fastgrid_v1.csv
