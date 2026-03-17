@@ -119,7 +119,7 @@ class BacktestEngine:
                 return {}
             return {sym: (val / equity) for sym, val in positions.items() if val is not None and abs(val) > 0}
 
-        def _format_weight_changes(from_w, to_w, min_abs_change=0.02, max_items=6):
+        def _format_weight_changes(from_w, to_w, min_abs_change=0.02, max_items=20):
             keys = set(from_w.keys()) | set(to_w.keys())
             changes = []
             for k in keys:
