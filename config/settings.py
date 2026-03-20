@@ -27,6 +27,8 @@ class Settings:
     TAKER_FEE = 0.001
     
     # === 策略参数 ===
+    # 注意：仓库内仅保留公开基线参数。
+    # 生产/私有优化参数请通过 .env 覆盖（不入库）。
     # 核心牛熊分界线：155天 (STH-RP)
     # 155 * 6 = 930
     MA_WINDOW = 930
@@ -68,7 +70,7 @@ class Settings:
     
     # === 仓位与风控 (核心优化) ===
     TOP_N = 1
-    CORE_BTC_WEIGHT = 0.9
+    CORE_BTC_WEIGHT = float(os.getenv("CORE_BTC_WEIGHT", "0.90"))
     # 动态 beta 目标范围
     TARGET_BETA_MIN = float(os.getenv("TARGET_BETA_MIN", "0.30"))
     TARGET_BETA_MAX = float(os.getenv("TARGET_BETA_MAX", "1.30"))
@@ -82,7 +84,7 @@ class Settings:
     BETA_BREADTH_WEIGHT = float(os.getenv("BETA_BREADTH_WEIGHT", "0.20"))
     
     # 1. 硬止损 (保命)
-    STOP_LOSS_PCT = 0.08  
+    STOP_LOSS_PCT = float(os.getenv("STOP_LOSS_PCT", "0.08"))
 
     # 止损后冷却期：硬止损触发后，必须等待N个bar才允许重新开仓
     # TIMEFRAME='4h' 时：12 bars = 2 天
@@ -92,7 +94,7 @@ class Settings:
     
     # 2. [新增] 移动止盈 (锁利)
     # 从高点回撤 10% 离场，防止利润回吐
-    TRAILING_STOP_PCT = 0.20
+    TRAILING_STOP_PCT = float(os.getenv("TRAILING_STOP_PCT", "0.20"))
     TRAILING_VOL_SPIKE_MULT = float(os.getenv("TRAILING_VOL_SPIKE_MULT", "1.20"))
     TRAILING_CONFIRM_SCORE_BULL = int(os.getenv("TRAILING_CONFIRM_SCORE_BULL", "2"))
     TRAILING_CONFIRM_SCORE_OTHER = int(os.getenv("TRAILING_CONFIRM_SCORE_OTHER", "1"))

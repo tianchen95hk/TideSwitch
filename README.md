@@ -48,6 +48,8 @@ python3 -m pip install pandas numpy matplotlib pyarrow ccxt python-dotenv
 
 - 在 `.env` 中配置 `BINANCE_API_KEY`、`BINANCE_SECRET_KEY`（无也可跑回测）。
 - 主要参数在 `config/settings.py`。
+- 仓库只保留公开基线参数，生产/私有优化参数已脱敏，不在仓库明文保存。
+- 如需本地覆盖，请在 `.env` 注入参数（例如：`CORE_BTC_WEIGHT`、`STOP_LOSS_PCT`、`TRAILING_STOP_PCT`）。
 
 3. 运行回测
 
@@ -67,4 +69,3 @@ python3 run_regime_signal.py --start-date 2023-01-01 --end-date 2026-03-16
 - `outputs/*with_btc_sharpe*.csv`：策略 vs BTC Sharpe 对比。
 - `outputs/regime_signal_*.csv`：状态序列与统计。
 - `outputs/trade_signals.csv`：交易信号明细。
-
