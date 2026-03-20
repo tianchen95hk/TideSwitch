@@ -31,45 +31,45 @@ class Settings:
     # 生产/私有优化参数请通过 .env 覆盖（不入库）。
     # 核心牛熊分界线：155天 (STH-RP)
     # 155 * 6 = 930
-    MA_WINDOW = 930
+    MA_WINDOW = int(os.getenv("MA_WINDOW", "930"))
     # 牛熊分界缓冲带：避免价格在 MA 附近抖动导致频繁切换
-    REGIME_HYSTERESIS_PCT = 0.003
+    REGIME_HYSTERESIS_PCT = float(os.getenv("REGIME_HYSTERESIS_PCT", "0.003"))
     # SuperBull 判定：牛市中的加速上行状态
     SUPERBULL_TREND_THRESHOLD = float(os.getenv("SUPERBULL_TREND_THRESHOLD", "0.10"))
     SUPERBULL_BREADTH_THRESHOLD = float(os.getenv("SUPERBULL_BREADTH_THRESHOLD", "0.15"))
     SUPERBULL_DRAWDOWN_THRESHOLD = float(os.getenv("SUPERBULL_DRAWDOWN_THRESHOLD", "-0.06"))
     # 空头快速趋势线（仅用于空头入场/退出过滤，不改变主 TideSwitch 机制）
-    SHORT_FAST_MA_WINDOW = 96
-    SHORT_FAST_MA_BAND_PCT = 0.0
-    ENABLE_NEUTRAL_SHORT = True
-    BB_STD = 2.0
+    SHORT_FAST_MA_WINDOW = int(os.getenv("SHORT_FAST_MA_WINDOW", "96"))
+    SHORT_FAST_MA_BAND_PCT = float(os.getenv("SHORT_FAST_MA_BAND_PCT", "0.0"))
+    ENABLE_NEUTRAL_SHORT = str(os.getenv("ENABLE_NEUTRAL_SHORT", "True")).lower() == "true"
+    BB_STD = float(os.getenv("BB_STD", "2.0"))
     
     # 短期指数移动平均线长度
-    DIFF_MA_SHORT = 12  # 12 bars = 0.5 days (4h线)
+    DIFF_MA_SHORT = int(os.getenv("DIFF_MA_SHORT", "12"))  # 12 bars = 0.5 days (4h线)
     
     # 长期指数移动平均线长度
-    DIFF_MA_LONG = 24  # 26 bars = 1 day (4h线)
+    DIFF_MA_LONG = int(os.getenv("DIFF_MA_LONG", "24"))  # 26 bars = 1 day (4h线)
     
     # RSI 窗口大小
-    DIFF_RSI_WIN = 14
+    DIFF_RSI_WIN = int(os.getenv("DIFF_RSI_WIN", "14"))
     
     # 价格变化率窗口大小，用于计算走势向上和向下
-    Y_ROC_PERIOD = 14
+    Y_ROC_PERIOD = int(os.getenv("Y_ROC_PERIOD", "14"))
     
     # 标准差窗口大小，用于计算波动率
-    Y_ZSCORE_WIN = 30
+    Y_ZSCORE_WIN = int(os.getenv("Y_ZSCORE_WIN", "30"))
     
     # === 交易触发 ===
-    BUY_DRAWDOWN = -0.20 #当价格相对近期高点的回撤达到 -20%（即跌了 20%）以上，才允许进入”考虑买入”的候选区间
-    BUY_DIFFUSION = -20 #当扩散指标低于 -20，表示市场处在更偏“恐慌/广泛走弱”的区间，作为买入的过滤条件之一
-    BUY_Y_RISE_DAYS = 2 #要求 Y 指标连续上行达到 2 个 bar 才确认买入（在 4h 级别就是连续 2 根 4h K）
+    BUY_DRAWDOWN = float(os.getenv("BUY_DRAWDOWN", "-0.20")) #当价格相对近期高点的回撤达到 -20%（即跌了 20%）以上，才允许进入”考虑买入”的候选区间
+    BUY_DIFFUSION = float(os.getenv("BUY_DIFFUSION", "-20")) #当扩散指标低于 -20，表示市场处在更偏“恐慌/广泛走弱”的区间，作为买入的过滤条件之一
+    BUY_Y_RISE_DAYS = int(os.getenv("BUY_Y_RISE_DAYS", "2")) #要求 Y 指标连续上行达到 2 个 bar 才确认买入（在 4h 级别就是连续 2 根 4h K）
     
-    SELL_BB_FACTOR = 1.0 #当价格突破布林带上限时，触发卖出
-    SELL_DIFFUSION = 20 #当扩散指标高于 20，表示市场进入偏“亢奋/广泛走强”的区间，作为卖出/止盈条件之一
-    SELL_Y_FALL_DAYS = 2 #要求 Y 指标连续下跌达到 2 个 bar 才确认卖出（在 4h 级别就是连续 2 根 4h K）
+    SELL_BB_FACTOR = float(os.getenv("SELL_BB_FACTOR", "1.0")) #当价格突破布林带上限时，触发卖出
+    SELL_DIFFUSION = float(os.getenv("SELL_DIFFUSION", "20")) #当扩散指标高于 20，表示市场进入偏“亢奋/广泛走强”的区间，作为卖出/止盈条件之一
+    SELL_Y_FALL_DAYS = int(os.getenv("SELL_Y_FALL_DAYS", "2")) #要求 Y 指标连续下跌达到 2 个 bar 才确认卖出（在 4h 级别就是连续 2 根 4h K）
     
     # === 仓位与风控 (核心优化) ===
-    TOP_N = 1
+    TOP_N = int(os.getenv("TOP_N", "1"))
     CORE_BTC_WEIGHT = float(os.getenv("CORE_BTC_WEIGHT", "0.90"))
     # 动态 beta 目标范围
     TARGET_BETA_MIN = float(os.getenv("TARGET_BETA_MIN", "0.30"))
@@ -105,10 +105,10 @@ class Settings:
     # 3. [新增] 波动率控制 (平滑曲线)
     # 目标年化波动率 50% (机构常用)
     # 当市场太疯时，降低仓位
-    TARGET_VOLATILITY = 0.45
+    TARGET_VOLATILITY = float(os.getenv("TARGET_VOLATILITY", "0.45"))
     # 空头仓位上限/下限：避免熊市里单边 -100% 过于激进
-    SHORT_MIN_WEIGHT = 0.35
-    SHORT_MAX_WEIGHT = 1.3
+    SHORT_MIN_WEIGHT = float(os.getenv("SHORT_MIN_WEIGHT", "0.35"))
+    SHORT_MAX_WEIGHT = float(os.getenv("SHORT_MAX_WEIGHT", "1.3"))
 
     # === Factor Mining 融合层 ===
     # 卫星仓位改为多因子截面评分（融合 mom/reversal/volume/funding 等）
